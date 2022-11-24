@@ -1,0 +1,14 @@
+on: workflow_dispatch
+name: ci
+jobs:
+  ci:
+    runs-on: ARM64
+    steps:
+    - uses: docker-practice/actions-setup-docker@master
+    - run: |
+        set -x
+        make CRYSTAL_SHA1=879691b2e3268ab290a2a0951bd1d6032f0d90f3 CRYSTAL_VERSION=1.6.2
+    - uses: actions/upload-artifact@v3
+      with:
+        name: my-artifact
+        path: build/
