@@ -1,7 +1,7 @@
-FROM 84codes/crystal:1.6.2-debian-11 AS debian
+FROM 84codes/crystal:1.7.2-debian-11 AS debian
 
 RUN apt-get update \
- && apt-get install -y build-essential libevent-dev libpcre3-dev automake libtool pkg-config git curl llvm-13 clang-13 \
+ && apt-get install -y build-essential libevent-dev libpcre2-dev automake libtool pkg-config git curl llvm-13 clang-13 \
  && (pkg-config || true)
 
 ARG release
@@ -18,14 +18,14 @@ RUN git clone https://github.com/ivmai/bdwgc \
  && ./configure --disable-debug --disable-shared --enable-large-config \
  && make -j$(nproc)
 
-FROM 84codes/crystal:1.6.2-alpine AS alpine
+FROM 84codes/crystal:1.7.2-alpine AS alpine
 
 # Install dependencies
 RUN apk add --no-cache \
       # Statically-compiled llvm
-      llvm13-dev llvm13-static \
+      llvm15-dev llvm15-static \
       # Static stdlib dependencies
-      zlib-static yaml-static libxml2-dev pcre-dev libevent-static \
+      zlib-static yaml-static libxml2-dev libxml2-static xz-static pcre-dev pcre2-dev libevent-static \
       # Static compiler dependencies
       libffi-dev \
       # Build tools
